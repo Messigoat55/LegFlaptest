@@ -35,3 +35,8 @@ if st.button('Predict Complications'):
     for outcome, model in models.items():
         prediction = model.predict(input_data)[0]
         st.write(f'Risk of {outcome}: {"Yes" if prediction == 1 else "No"}')
+streamlit
+pandas
+scikit-learn
+xgboost
+joblib
