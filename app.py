@@ -3,7 +3,11 @@ import pandas as pd
 from joblib import load
 
 # Load the combined models file
-models = load('all_models.joblib')
+try:
+    models = load('all_models.joblib')
+except FileNotFoundError:
+    st.error("Model file not found. Please ensure 'all_models.joblib' is in the correct directory.")
+    st.stop()
 
 # Streamlit app title
 st.title('Lower Extremity Flap Complication Predictor')
@@ -32,11 +36,9 @@ input_data = pd.DataFrame({
 
 # Predict and display results for each outcome
 if st.button('Predict Complications'):
-    for outcome, model in models.items():
-        prediction = model.predict(input_data)[0]
-        st.write(f'Risk of {outcome}: {"Yes" if prediction == 1 else "No"}')
-streamlit
-pandas
-scikit-learn
-xgboost
-joblib
+    try:
+        for outcome, model in models.items():
+            prediction = model.predict(input_data)[0]
+            st.write(f'Risk of {outcome}: {"Yes" if prediction == 1 else "No"}')
+    except Exception as e:
+        st.error(f"Error in prediction: {str(e)}")
